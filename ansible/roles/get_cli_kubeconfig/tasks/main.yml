@@ -1,0 +1,25 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for get_cli_kubeconfig
+# The point of the run onces
+- name: Grab the kubeconfig file for workstation
+  ansible.builtin.slurp:
+    src: "{{ get_cli_kubeconfig_src }}"
+  register: kubeconfig_raw
+  become: true
+
+- name: Make sure kube folder exists
+  ansible.builtin.file:
+    path: "{{ get_cli_kubeconfig_dest | dirname }}"
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
+    state: directory
+    mode: "0755"
+  delegate_to: localhost
+
+- name: Write kubeconfig file
+  ansible.builtin.copy:
+    content: "{{ kubeconfig_raw.content | b64decode | regex_replace('127\\.0\\.0\\.1', ansible_facts['default_ipv4']['address']) }}"
+    dest: "{{ get_cli_kubeconfig_dest }}"
+    mode: "0600"
+  delegate_to: localhost

@@ -1,0 +1,41 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for install_cluster_k3s
+- name: Wait for cloud-init and first-boot updates to finish
+  ansible.builtin.command: cloud-init status --wait
+  register: cloud_init_res
+  failed_when: "'status: done' not in cloud_init_res.stdout"
+  # This is purely cosmetic. When you set changed_when or failed_when to false they never report those actions. This just makes it so each run of the command returns ok its just cleaner
+  changed_when: false
+
+- name: Wait for any packages currently being installed
+  ansible.builtin.shell: fuser /var/lib/dpkg/lock-frontend
+  register: dpkg_lock_res
+  failed_when: false
+  changed_when: false
+  # when checking for whos locking a file it returns 0 when someone has a lock and nonzero every other time. It also returns 0 when the file doesnt exist
+  until: dpkg_lock_res.rc != 0
+  retries: 60
+  delay: 5
+
+- name: Create config directory
+  ansible.builtin.file:
+    path: "{{ config_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Deploy config file
+  ansible.builtin.template:
+    src: "config.yaml.j2"
+    dest: "{{ config_path }}/config.yaml"
+    owner: root
+    group: root
+    mode: "0600"
+  notify: Restart k3s agent
+
+- name: Run install script
+  ansible.builtin.shell: 
+    cmd: curl -sfL https://get.k3s.io | sh -
+    creates: /usr/local/bin/k3s

@@ -1,0 +1,5 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for get_cli_kubeconfig
+get_cli_kubeconfig_src: /etc/rancher/k3s/k3s.yaml
+get_cli_kubeconfig_dest: "{{ lookup('env','HOME') }}/.kube/config"

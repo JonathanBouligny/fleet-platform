@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for install_cluster_k3s
+- name: Restart k3s agent
+  ansible.builtin.service:
+    name: "{{ k3s_service }}"
+    state: restarted

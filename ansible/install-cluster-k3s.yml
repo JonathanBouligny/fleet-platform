@@ -1,0 +1,11 @@
+---
+- name: Install k3s
+  hosts: all
+  become: true
+  vars_files:
+    - vars/k3s-token-vault.yml
+  environment:
+    INSTALL_K3S_VERSION: "{{ install_cluster_k3s_version }}"
+    INSTALL_K3S_EXEC: "{{ k3s_node_type }}"
+  roles:
+    - role: install_cluster_k3s

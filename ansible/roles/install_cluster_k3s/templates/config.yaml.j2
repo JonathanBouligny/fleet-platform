@@ -1,0 +1,9 @@
+---
+token: "{{ k3s_token }}"
+{% if k3s_node_type == "server" %}
+disable:
+  - traefik
+{% endif %}
+{% if k3s_node_type == "agent" %}
+server: "{{ k3s_server_url }}"
+{% endif %}

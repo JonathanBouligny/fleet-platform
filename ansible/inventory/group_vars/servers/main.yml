@@ -1,0 +1,3 @@
+---
+k3s_node_type: server
+k3s_service: k3s
