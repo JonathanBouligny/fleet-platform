@@ -1,0 +1,5 @@
+---
+- name: Install to the cli argocd
+  hosts: localhost
+  roles:
+    - role: install_cli_argocd

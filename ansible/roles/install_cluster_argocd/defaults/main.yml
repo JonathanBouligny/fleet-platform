@@ -1,0 +1,9 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for install_cluster_argocd
+# Installs version v3.5.2
+install_cluster_argocd_chart_version: "10.9.2"
+install_cluster_argocd_namespace: "argocd"
+install_cluster_argocd_kubeconfig: "~/.kube/config"
+install_cluster_argocd_chart_repo_url: "https://argoproj.github.io/argo-helm"
+install_cluster_argocd_package_name: "argo-cd"

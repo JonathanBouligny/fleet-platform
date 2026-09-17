@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for install_cli_argocd
+- name: Ensure the install directory exists
+  ansible.builtin.file:
+    path: "{{ install_cli_argocd_dest | dirname }}"
+    state: directory
+    mode: '0755'
+
+- name: Download and install the Argo CD CLI
+  ansible.builtin.get_url:
+    url: "https://github.com/argoproj/argo-cd/releases/download/{{ install_cli_argocd_version }}/argocd-linux-{{ install_cli_argocd_arch }}"
+    dest: "{{ install_cli_argocd_dest }}"
+    mode: '0755'

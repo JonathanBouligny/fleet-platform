@@ -1,0 +1,8 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for install_cli_argocd
+install_cli_argocd_version: "v3.5.2"
+install_cli_argocd_arch: "amd64"
+# Per-user install, so no root is needed. ~ expands to the target user's home.
+# Override with /usr/local/bin/argocd (plus become) for a system-wide install.
+install_cli_argocd_dest: "~/.local/bin/argocd"

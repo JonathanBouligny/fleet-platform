@@ -1,0 +1,11 @@
+---
+- name: Install argocd
+  hosts: localhost
+  # Where the admin password comes from
+  vars_files:
+    - vars/argocd-adminpassword-vault.yml
+  vars:
+    install_cluster_argocd_values_files:
+      - "{{ playbook_dir }}/files/install_cluster_argocd_values.yml"
+  roles:
+    - role: install_cluster_argocd

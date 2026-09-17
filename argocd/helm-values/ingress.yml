@@ -1,0 +1,7 @@
+controller:
+  service:
+    type: LoadBalancer
+  defaultTLSSecret:
+    enabled: true
+    secretNamespace: '{{ include "kubernetes-ingress.namespace" . }}'
+    secret: wehaveaproblem-net-tls
