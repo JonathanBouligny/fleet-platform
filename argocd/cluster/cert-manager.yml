@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  # You'll usually want to add your resources to the argocd namespace.
+  namespace: argocd
+  # Add this finalizer ONLY if you want these to cascade delete.
+  finalizers:
+    # The default behaviour is foreground cascading deletion
+    - resources-finalizer.argocd.argoproj.io
+    # Alternatively, you can use background cascading deletion
+    # - resources-finalizer.argocd.argoproj.io/background
+spec:
+  # The project the application belongs to.
+  project: default
+  sources:
+    - repoURL: oci://quay.io/jetstack/charts/cert-manager  # Can point to either a Helm chart repo or a git repo.
+      chart: cert-manager
+      targetRevision: v1.21.2
+      helm:
+        valueFiles:
+          - $values/argocd/helm-values/cert-manager.yml
+    - repoURL: 'ssh://git@192.168.1.30/jon/fleet-platform.git'
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    syncOptions: [CreateNamespace=true]
+    automated:
+      # This was removed because if we accidently or intentionally delete the cert manager application it will prune the crds because we have crd install true in the values file. 
+      # This will delete all the children of those CRDs which means all the config files and thats a huge issue because we could nuke data. So if we want the extra data gone we'll have to delete by hand thats fine
+      # prune: true
+      selfHeal: true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
