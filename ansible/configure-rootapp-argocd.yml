@@ -1,0 +1,15 @@
+---
+- name: Configure argocd with root app
+  hosts: localhost
+  vars:
+    kube_namespace: "argocd"
+    kubeconfig_path: "~/.kube/config"
+    root_app_path: "/home/jon/super-dumb-repos/fleet-platform/argocd/cluster/root.yml"
+  tasks:
+    - name: Apply root app
+      kubernetes.core.k8s:
+        kubeconfig: "{{ kubeconfig_path }}"
+        namespace: "{{ kube_namespace }}"
+        state: present
+        apply: true
+        src: "{{ root_app_path }}"
