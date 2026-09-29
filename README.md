@@ -4,7 +4,7 @@
 
 `fleet-platform` is a fully automated, declarative homelab Kubernetes platform. It provisions virtual machine infrastructure on a bare-metal Proxmox VE cluster using Terraform, configures k3s nodes via Ansible, and manages cluster workloads continuously through an Argo CD GitOps pipeline.
 
-The entire infrastructure is designed for **single-script teardown and rebuild harness**, ensuring absolute zero configuration drift.
+The entire infrastructure is designed for a **single-script teardown and rebuild harness**, ensuring absolute zero configuration drift.
 
 ---
 
@@ -57,7 +57,6 @@ flowchart TD
 ```text
 fleet-platform/
 ├── README.md                      # Repository documentation & overview
-├── NOTES.md                       # Deep technical notes & implementation post-mortems
 ├── rebuild-cluster.sh             # Single-command end-to-end teardown and rebuild harness
 ├── ansible.cfg                    # Ansible configuration and inventory settings
 ├── ansible/                       # Ansible playbooks and modular roles
@@ -110,7 +109,9 @@ The entire cluster can be destroyed and recreated from scratch with a single com
 
 ---
 
-## 📖 Deep-Dive Documentation & Notes
+## 📖 Technical Post-Mortems & Engineering Blog
 
-- **Detailed Implementation Diary**: Read [`NOTES.md`](NOTES.md) for architectural trade-offs, bug post-mortems, and cloud-init troubleshooting.
-- **Engineering Blog**: Technical deep dives on this platform are published at [bouligny.dev/fleet-platform](https://bouligny.dev/fleet-platform).
+Detailed technical post-mortems, architectural decision logs, and troubleshooting notes for this platform are published on [bouligny.dev](https://bouligny.dev):
+
+- 📌 **Architecture Overview & Roadmap**: [bouligny.dev/fleet-platform](https://bouligny.dev/fleet-platform)
+- 📝 **Phase 2, Part 1**: [cert-manager Rate Limits, Dynamic Staging/Prod Issuers, and Cluster Restore Race Conditions](https://bouligny.dev/fleet-platform/phase-02-part-01-cert-manager-rate-limits-restore-race/)
